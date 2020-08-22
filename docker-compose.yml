@@ -1,0 +1,23 @@
+version: "3.5"
+
+services:
+
+  backend:
+    build: ./python-backend
+    image: python-backend
+    ports:
+      - 5000:5000
+    container_name: dependency-backend
+    volumes:
+      - src:/src
+
+  frontend:
+    build: ./react-frontend
+    image: react-frontend
+    ports:
+      - 8080:3000
+    container_name: dependency-frontend
+
+volumes:
+    src:
+    imgs:
