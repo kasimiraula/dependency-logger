@@ -1,5 +1,5 @@
 .DS_Store
-react-frontend/
-backend/
-docker-compose.yml
+.react-frontend/
+.backend/
+.docker-compose.yml
 
