@@ -15,7 +15,7 @@ def index():
 
 @app.route('/dependencies/')
 def getAll():
-    input_file='static/status.real'
+    input_file='./app/static/status.real'
     #os.getenv('INPUT_FILE')
     reader=open('{}_formatted'.format(input_file), "r")
     dependencies=[json.loads(dependency) for dependency in reader.readlines()]
@@ -25,7 +25,7 @@ def getAll():
 
 @app.route('/dependencies/<dependency_name>', methods=["GET"])
 def getOne(dependency_name):
-    input_file='static/status.real'
+    input_file='./app/static/status.real'
     #os.getenv('INPUT_FILE')
     reader=open('{}_formatted'.format(input_file), "r")
     dependencies=reader.readlines()
@@ -82,7 +82,7 @@ if __name__ == '__main__':
     print("Backend starting")
     load_dotenv()
     #input_file = os.getenv('INPUT_FILE')
-    input_file = 'static/status.real'
+    input_file = './app/static/status.real'
     print(os.path.isfile('{}_formatted'.format(input_file)))
     if not os.path.isfile('{}_formatted'.format(input_file)):
         print('formatted file not found. formatting input file...')
@@ -92,7 +92,6 @@ if __name__ == '__main__':
         print('Done')
     else:
         print("File already exists! Fetching to memory...")
-        dependencies=[json.loads(dependency) for dependency in reader.readlines()]
 
 
     app.run()
