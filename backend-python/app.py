@@ -3,7 +3,7 @@ import json
 import numpy as np
 
 from dotenv import load_dotenv
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
@@ -13,21 +13,23 @@ CORS(app)
 def index():
     return 'Hello!'
 
-@app.route('/packages/')
+@app.route('/dependencies/')
 def getAll():
     reader=open('{}_formatted'.format(input_file), "r")
-    packages=[json.loads(pack) for pack in reader.readlines()]
-    return jsonify({'data': packages})
+    dependencies=[json.loads(dependency) for dependency in reader.readlines()]
+    #return jsonify({'data': packages})
+    return render_template('all-dependencies.html', dependencies = dependencies)
 
 
-@app.route('/packages/<package_name>', methods=["GET"])
-def getOne(package_name):
-    input_file='../resources/status.real'
+@app.route('/dependencies/<dependency_name>', methods=["GET"])
+def getOne(dependency_name):
     reader=open('{}_formatted'.format(input_file), "r")
-    packages=reader.readlines()
-    selected_package=[json.loads(pack) for pack in packages if json.loads(pack)["Package"] == package_name][0]
+    dependencies=reader.readlines()
+    selected_dependency=[json.loads(dependency) for dependency in dependencies if json.loads(dependency)["Package"] == dependency_name][0]
     #package=[pack for pack in packages if pack['Package'] == package_name]
-    return jsonify({'data': selected_package})
+    #return jsonify({'data': selected_dependency})
+    return render_template('single-dependency.html', dependency = selected_dependency)
+
 
 def format_dependencies(filename, attributes=['Package', 'Description', 'Depends']):
     dependency_list=[]
@@ -63,7 +65,7 @@ def determine_reverse_dependencies(filename, dependency_list):
                 if (package['Package']==np.array(dependency['Depends'])).sum()>0:
                     reverse_list.append(dependency['Package'])
         if len(reverse_list)>0:
-            package['Reverse dependencies']=reverse_list
+            package['Reverse_dependencies']=reverse_list
             reverse_list=[]
     for d in dependency_list:
         filewriter.write(json.dumps(d)+'\n')
@@ -75,11 +77,13 @@ if __name__ == '__main__':
     print("Backend starting")
     load_dotenv()
     input_file = os.getenv('INPUT_FILE')
+    #input_file = './resources/status.real'
+    #print(os.path.isfile('{}_formatted'.format(input_file)))
     if not os.path.isfile('{}_formatted'.format(input_file)):
         print('formatted file not found. formatting input file...')
         dependencies = format_dependencies(input_file)
         print('\n Determining reverse dependencies..')
-        determine_reverse_dependencies(input_file, dependencies)
+        dependencies = determine_reverse_dependencies(input_file, dependencies)
         print('Done')
 
-    app.run("0.0.0.0", port=5000)#, debug=debug)
+    app.run("localhost", port=5000)#, debug=debug)

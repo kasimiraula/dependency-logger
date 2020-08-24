@@ -1,16 +1,17 @@
-import React, { Component } from 'react'
-import axios from 'axios'
-import './App.css'
+import React from 'react';
+import logo from './logo.svg';
+import './App.css';
+import {connect} from 'react-redux'
+import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom'
 
-export default class App extends Component {
-  constructor() {
-    super()
+import {initializeDependencies} from './reducers/dependencyReducer'
+import DependencyList from './components/DependencyList'
+import Dependency from './components/Dependency'
 
-    this.state = {
-      dependency_list=[]
-      selectedFile: null,
-      fileUrl: ''
-    }
+class App extends React.Component {
+
+  componentWillMount = async () => {
+    await this.props.initializeDependencies()
   }
 
   /*fileChangedHandler = (event) => {
@@ -41,24 +42,42 @@ export default class App extends Component {
           console.log(response);
         })
     }
-  }*/
+  }
 
-
+  <Togglable buttonLabel="Add new blog">
+    <BlogForm/>
+  </Togglable>
+  */
 
   render() {
-    return (
-      <Segment style={{
-        width: '50%', margin: 'auto', padding: '10px'
-      }}>
-        <Header style={{ width: '50%', margin: 'auto', textAlign: 'center' }}>Dependency list</Header>
 
-          <span>
-            <Input
-              type="file"
-              onChange={this.fileChangedHandler}
-              icon={<Icon name='upload' inverted circular link onClick={this.uploadHandler} disabled={!this.state.selectedFile} />} />
-          </span>
-      </Segment>
+    const dependencyByName = (package_name) =>
+      (this.props.dependencies.find(d => d.package === package_name))
+
+    return (
+      <div className='container'>
+      <Router>
+      <div>
+      <h2>dependency app</h2>
+         <div>
+           <Route exact path="/" render={() => <DependencyList/>} />
+           <Route exact path="/dependencies/:id" render={({match}) => <Dependency key={match.params.id} dependency={dependencyByName(match.params.package)} />}/>
+         </div>
+         </div>
+       </Router>
+      </div>
     )
   }
 }
+
+
+const mapStateToProps = (state) => {
+    return {
+      dependencies: state.dependencies
+    }
+}
+
+export default connect(
+  mapStateToProps,
+  {initializeDependencies}
+)(App)

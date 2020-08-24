@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="HTML displayer for dependency file"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <title>Dependency App</title>
+  </head>
+  <body>
+    <div id="root"></div>
+      <div class="all-content">
+        {% if dependency %}
+        <h2>{{dependency.Package}}</h2>
+        <p>{{dependency.Description}}</p>
+        <h3>Dependencies:</h3>
+        <table>
+          <tbody>
+          {% for d in dependency.Depends %}
+            <tr><td><a href={{d}}>{{d}}</a></td></tr>
+          {% endfor %}
+          <tbody>
+        </table>
+          {% if dependency.Reverse_dependencies %}
+            <h3> Reverse dependencies </h3>
+            <table>
+              <tbody>
+              {% for r in dependency.Reverse_dependencies %}
+                <tr><td><a href={{r}}>{{r}}</a></td></tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          {% endif %}
+        {% else %}
+          <h1>Dependencies</h1>
+        {% endif %}
+      </div>
+  </body>
+</html>
