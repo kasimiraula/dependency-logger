@@ -3,7 +3,7 @@ import json
 import numpy as np
 
 from dotenv import load_dotenv
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, redirect
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
@@ -11,7 +11,7 @@ CORS(app)
 
 @app.route('/')
 def index():
-    return 'Hello!'
+    return redirect("/dependencies/")
 
 @app.route('/dependencies/')
 def getAll():
@@ -25,7 +25,8 @@ def getAll():
 def getOne(dependency_name):
     reader=open('{}_formatted'.format(input_file), "r")
     dependencies=reader.readlines()
-    selected_dependency=[json.loads(dependency) for dependency in dependencies if json.loads(dependency)["Package"] == dependency_name][0]
+    selected_dependency=[json.loads(dependency) for dependency in dependencies if json.loads(dependency)["Package"] == dependency_name]
+    selected_dependency=selected_dependency[0]
     #package=[pack for pack in packages if pack['Package'] == package_name]
     #return jsonify({'data': selected_dependency})
     return render_template('single-dependency.html', dependency = selected_dependency)
@@ -86,4 +87,4 @@ if __name__ == '__main__':
         dependencies = determine_reverse_dependencies(input_file, dependencies)
         print('Done')
 
-    app.run("localhost", port=5000)#, debug=debug)
+    app.run("localhost", port=5000)

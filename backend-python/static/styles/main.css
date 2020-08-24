@@ -1,0 +1,32 @@
+
+#back-button {
+  margin-left: 2%;
+  margin-top: 3%;
+  color: navy;
+}
+
+.content {
+  background-color: lightgrey;
+  margin-left: 3%;
+  margin-right: 3%;
+  margin-top: 2%;
+  padding-left: 1%;
+  padding-top: 0.5%;
+  padding-bottom: 1%;
+  border-radius: 20px;
+  font-size: 110%;
+}
+
+.content h2 {
+  margin-left: 10%;
+  margin-bottom: 5%;
+  margin-right: 15%;
+}
+
+.content table {
+  margin-left: 3%;
+  margin-right: 3%;
+}
+.content a:hover {
+  margin-left: 3%;
+}
