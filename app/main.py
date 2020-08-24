@@ -15,7 +15,9 @@ def index():
 
 @app.route('/dependencies/')
 def getAll():
-    reader=open('{}_formatted'.format(os.getenv('INPUT_FILE')), "r")
+    input_file='./static/resources/status.real'
+    #os.getenv('INPUT_FILE')
+    reader=open('{}_formatted'.format(input_file), "r")
     dependencies=[json.loads(dependency) for dependency in reader.readlines()]
     #return jsonify({'data': packages})
     return render_template('all-dependencies.html', dependencies = dependencies)
@@ -23,7 +25,9 @@ def getAll():
 
 @app.route('/dependencies/<dependency_name>', methods=["GET"])
 def getOne(dependency_name):
-    reader=open('{}_formatted'.format(os.getenv('INPUT_FILE')), "r")
+    input_file='./static/resources/status.real'
+    #os.getenv('INPUT_FILE')
+    reader=open('{}_formatted'.format(input_file), "r")
     dependencies=reader.readlines()
     selected_dependency=[json.loads(dependency) for dependency in dependencies if json.loads(dependency)["Package"] == dependency_name]
     selected_dependency=selected_dependency[0]
