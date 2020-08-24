@@ -4,6 +4,10 @@
   margin-top: 3%;
   color: navy;
 }
+#back-button a:hover{
+  color: #3293a8;
+}
+
 
 .content {
   background-color: lightgrey;
@@ -28,5 +32,5 @@
   margin-right: 3%;
 }
 .content a:hover {
-  margin-left: 3%;
+  color: #3293a8;
 }

@@ -1,6 +1,6 @@
 FROM python:3.7-slim
 
-WORKDIR /src
+WORKDIR /mydir
 
 COPY . .
 
@@ -8,4 +8,4 @@ RUN pip install --upgrade pip
 
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
-CMD ["python", "-u", "app.py"]
+CMD ["python", "app.py"]

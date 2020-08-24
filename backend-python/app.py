@@ -87,4 +87,4 @@ if __name__ == '__main__':
         dependencies = determine_reverse_dependencies(input_file, dependencies)
         print('Done')
 
-    app.run("localhost", port=5000)
+    app.run()
